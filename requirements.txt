@@ -1,0 +1,9 @@
+# Dependências principais
+Faker==30.0.0
+
+# Utilitários opcionais (usados em análises futuras)
+pandas==2.2.3
+matplotlib==3.9.2
+
+# Boa prática: garantir encoding e formatação consistente
+charset-normalizer==3.4.0
