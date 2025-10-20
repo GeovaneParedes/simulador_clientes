@@ -1,131 +1,143 @@
-# 🧮 Simulador de Banco de Dados de Clientes (Python)
+<div align="center">
 
-Este projeto simula uma base de dados corporativa de clientes utilizando **Python** e **JSON** como fonte primária.  
-O objetivo é permitir experimentos e análises de dados de forma local — sem depender de banco de dados real — ideal para **testes, aprendizado de data analytics e prototipagem de ETL**.
+# 🧮 Simulador de Banco de Dados de Clientes  
+### Customer Database Simulator (Python)
+
+![Python](https://img.shields.io/badge/python-3.11+-blue?logo=python)
+![pandas](https://img.shields.io/badge/pandas-2.2+-yellow?logo=pandas)
+![matplotlib](https://img.shields.io/badge/matplotlib-3.9+-orange?logo=plotly)
+![Faker](https://img.shields.io/badge/faker-30.0.0-lightgrey)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-active-success)
+
+</div>
 
 ---
 
-## 🚀 Estrutura do Projeto
+## 🇧🇷 Sobre o Projeto | 🇺🇸 About the Project
+
+🇧🇷 Este projeto simula uma base de dados corporativa de clientes usando **Python**, **JSON**, **pandas** e **matplotlib**.  
+Ele gera automaticamente uma base de 200 clientes fictícios, permitindo testar **análises de dados**, **visualizações gráficas** e **processos ETL** locais.
+
+🇺🇸 This project simulates a corporate customer database using **Python**, **JSON**, **pandas**, and **matplotlib**.  
+It automatically generates a synthetic dataset with 200 customers — ideal for experimenting with **data analysis**, **visualizations**, and **ETL flows**.
+
+📦 **Repositório:**  
+👉 [github.com/GeovaneParedes/simulador_clientes](https://github.com/GeovaneParedes/simulador_clientes)
+
+---
+
+## 🗂️ Estrutura | Structure
 
 /empresa_dados/
 │
-├── clientes.json # Base simulada com ~200 clientes
-├── analise_cliente.py # Script de análise dos dados
+├── clientes.json # Base simulada | Simulated customer data
+├── analise_cliente.py # Análise com pandas + matplotlib | Analysis with pandas + matplotlib
 └── utils/
-├── init.py
-└── gerador_clientes.py # Gerador automático de clientes fake
-
+└── gerador_clientes.py # Geração automática | Random data generator
 
 ---
 
-## 🎯 Objetivos
+## 🧩 Funcionalidades | Features
 
-- Simular um banco de dados de clientes realista.  
-- Executar análises básicas de negócio:
-  - Média de idade e receita.
-  - Clientes ativos e VIP.
-  - Distribuição por estado e gênero.
-- Servir de base para estudos de **Python Data Analysis**, **pandas**, **ETL**, **dashboards**, etc.
+| 🇧🇷 Em Português | 🇺🇸 In English |
+|:-----------------|:---------------|
+| Gera clientes falsos realistas com **Faker** | Generates realistic fake customers with **Faker** |
+| Calcula estatísticas (idade média, receita etc.) | Calculates KPIs (average age, revenue, etc.) |
+| Cria gráficos automáticos em `/graficos/` | Automatically saves charts in `/graficos/` |
+| Análises com **pandas** e **matplotlib** | Analysis with **pandas** and **matplotlib** |
+| Código limpo e modular | Clean, modular and readable code |
 
 ---
 
-## ⚙️ Instalação
+## 📊 Exemplo de Saída | Example Output
 
-### 1️⃣ Clonar o repositório
+📊 RESUMO GERAL
+Total de clientes: 200
+Ativos: 149 (74.5%)
+Média de idade: 43.2
+Receita total: R$ 2,174,780.49
+Média por cliente: R$ 10,873.90
+Clientes VIP (> R$15.000): 56
 
-```bash
-git clone https://github.com/GeovaneParedes/simulador_clientes.git
-cd simulador-clientes
+---
 
+## 📈 Visualizações | Visualizations
 
-2️⃣ Criar ambiente virtual (recomendado)
+### 🇧🇷 Clientes por Estado | 🇺🇸 Customers by State
+![Clientes por Estado](graficos/clientes_por_estado.png)
+
+---
+
+### 🇧🇷 Receita Total por Estado | 🇺🇸 Total Revenue by State
+![Receita por Estado](graficos/receita_por_estado.png)
+
+---
+
+### 🇧🇷 Distribuição por Gênero | 🇺🇸 Gender Distribution
+![Gênero](graficos/distribuicao_genero.png)
+
+---
+
+### 🇧🇷 Faixas de Receita | 🇺🇸 Revenue Range Distribution
+![Faixa de Receita](graficos/faixa_receita.png)
+
+---
+
+## ⚙️ Instalação | Installation
+
+💡 Caso use Linux e queira gráficos interativos:
+sudo apt install python3-tk
+
+💡 On Linux, for interactive chart display:
+sudo apt install python3-tk
 
 python -m venv .venv
-source .venv/bin/activate   # Linux/Mac
-# ou
+source .venv/bin/activate   # Linux / Mac
 .venv\Scripts\activate      # Windows
-
-3️⃣ Instalar dependências
 
 pip install -r requirements.txt
 
-Dependência principal:
-
-faker
-
-🧩 Uso
-🔹 Gerar base de clientes
-
-O script abaixo cria um arquivo clientes.json com 200 clientes aleatórios.
+🚀 Execução | Usage
+🇧🇷 Gerar base de dados | 🇺🇸 Generate dataset
 
 python utils/gerador_clientes.py
 
-Exemplo de cliente gerado:
-
-{
-  "id": 1,
-  "nome": "Carlos Oliveira",
-  "idade": 34,
-  "email": "carlos.oliveira@example.com",
-  "telefone": "+55 11 91234-5678",
-  "estado": "SP",
-  "cidade": "São Paulo",
-  "genero": "M",
-  "data_cadastro": "2023-07-21",
-  "receita_total": 12500.75,
-  "ativo": true
-}
-
-🔹 Executar análise
+🇧🇷 Rodar análise e gerar gráficos | 🇺🇸 Run analysis and generate charts
 
 python analise_cliente.py
 
-Saída esperada (exemplo):
+Os gráficos serão salvos automaticamente em /graficos/
+Charts will be saved automatically in /graficos/
 
-Total de clientes: 200
-Ativos: 152 (76.0%)
-Média de idade: 39.7
-Receita total: R$ 1,789,540.82
-Média de receita por cliente: R$ 8,947.70
-Clientes VIP (>R$ 15.000): 35
-Distribuição por estado: {'SP': 38, 'RJ': 26, 'MG': 24, ...}
-Distribuição por gênero: {'M': 96, 'F': 104}
+🧠 Próximos Passos | Next Steps
 
-📊 Próximos Passos
+| 🇧🇷                                              | 🇺🇸                                                 |
+| :---------------------------------------------- | :--------------------------------------------------- |
+| 🧩 Criar dashboard interativo com **Streamlit** | 🧩 Build an interactive dashboard with **Streamlit** |
+| 🗄️ Integrar com **SQLite / PostgreSQL**         | 🗄️ Integrate with **SQLite / PostgreSQL**           |
+| 📤 Exportar relatórios em **CSV / Excel**       | 📤 Export reports to **CSV / Excel**                 |
+| 🔁 Automatizar pipeline ETL simulado            | 🔁 Automate a simulated ETL pipeline                 |
 
-Implementar versão com pandas para análise mais rica.
-Adicionar visualizações gráficas (matplotlib / plotly).
-Criar pipeline de atualização automática dos dados.
-Exportar relatórios em CSV, Excel ou Dashboard Web.
+🧮 Tecnologias | Technologies
 
-🧠 Conceitos Envolvidos
+| Stack      | Versão | Uso / Use                             |
+| :--------- | :----- | :------------------------------------ |
+| Python     | ≥ 3.11 | Linguagem principal / Main language   |
+| Faker      | 30.0.0 | Geração de dados falsos / Fake data   |
+| pandas     | 2.2.3  | Análise de dados / Data analysis      |
+| matplotlib | 3.9.2  | Visualização de dados / Visualization |
 
-Geração sintética de dados com Faker.
+👨‍💻 Autor | Author
 
-Manipulação de listas e dicionários em Python.
+@DevGege (Geovane Paredes)
+💼 Programador Sênior • Software & DevOps
 
-Leitura/escrita de JSON com encoding UTF-8.
-
-Estatísticas descritivas (média, contagem, soma).
-
-Organização modular e boas práticas de código.
-
-🧩 Tecnologias
-
-Stack	Versão mínima	Uso principal
-Python	3.11	Linguagem principal
-Faker	≥ 25.0	Geração de dados falsos
+🇧🇷 “Código limpo é mais do que estética — é uma forma de pensar.”
+🇺🇸 “Clean code is more than aesthetics — it’s a mindset.”
 
 
-📜 Licença
+🧾 Licença | License
 
-Este projeto é de uso livre para fins educacionais e de experimentação.
-Sinta-se à vontade para forkar, melhorar e documentar suas análises.
-
-👨‍💻 Autor
-
-@DevGege
-Programador Sênior • Software & DevOps
-
-Código limpo, modular e sem gambiarras.
-"Dados bem estruturados contam boas histórias."
+Distribuído sob licença MIT — uso livre para fins educacionais e experimentais.
+Sinta-se à vontade para forkar, evoluir e criar novas análises a partir deste projeto.
