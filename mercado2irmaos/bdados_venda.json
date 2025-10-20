@@ -1,0 +1,50 @@
+[
+  {
+    "id_venda": 1,
+    "data": "2025-10-15",
+    "produtos": [
+      {"nome": "Arroz Integral 5kg", "quantidade": 1, "preco_unitario": 25.50},
+      {"nome": "Leite Semi-desnatado 1L", "quantidade": 4, "preco_unitario": 4.99},
+      {"nome": "Pão de Forma Tradicional", "quantidade": 2, "preco_unitario": 7.80}
+    ],
+    "valor_total": 59.46
+  },
+  {
+    "id_venda": 2,
+    "data": "2025-10-15",
+    "produtos": [
+      {"nome": "Cerveja Pilsen Lata 350ml", "quantidade": 12, "preco_unitario": 3.50},
+      {"nome": "Salgadinho de Queijo", "quantidade": 3, "preco_unitario": 6.20}
+    ],
+    "valor_total": 60.60
+  },
+  {
+    "id_venda": 3,
+    "data": "2025-10-16",
+    "produtos": [
+      {"nome": "Feijão Preto Tipo 1 1kg", "quantidade": 2, "preco_unitario": 8.90},
+      {"nome": "Café em Pó Gourmet 500g", "quantidade": 1, "preco_unitario": 19.99}
+    ],
+    "valor_total": 37.79
+  },
+  {
+    "id_venda": 4,
+    "data": "2025-10-17",
+    "produtos": [
+      {"nome": "Frango Congelado 1kg", "quantidade": 1, "preco_unitario": 15.00},
+      {"nome": "Brócolis Congelado 300g", "quantidade": 2, "preco_unitario": 5.90},
+      {"nome": "Manteiga com Sal 200g", "quantidade": 1, "preco_unitario": 9.50},
+      {"nome": "Ovos Brancos Dúzia", "quantidade": 1, "preco_unitario": 12.00}
+    ],
+    "valor_total": 48.30
+  },
+  {
+    "id_venda": 5,
+    "data": "2025-10-18",
+    "produtos": [
+      {"nome": "Chocolate Amargo 70%", "quantidade": 5, "preco_unitario": 10.50},
+      {"nome": "Vinho Tinto Chileno", "quantidade": 1, "preco_unitario": 45.00}
+    ],
+    "valor_total": 97.50
+  }
+]
