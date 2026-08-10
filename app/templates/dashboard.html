@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Analytics & Simulador de Clientes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg: #0b0f19;
+            --card-bg: #151d2a;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-cyan: #06b6d4;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+            --accent-amber: #f59e0b;
+            --border: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .btn-simulate {
+            background-color: var(--accent-purple);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-simulate:hover {
+            background-color: #7c3aed;
+            transform: scale(1.02);
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .kpi-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .kpi-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        .kpi-value.green { color: var(--accent-green); }
+        .kpi-value.purple { color: var(--accent-purple); }
+        .kpi-value.amber { color: var(--accent-amber); }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .chart-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        canvas { max-height: 320px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👥 CRM Analytics <span>& Simulador de Clientes</span></h1>
+        <button class="btn-simulate" onclick="triggerSimulation()">⚡ Simular Compras (+10)</button>
+    </div>
+
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-title">Total de Clientes</div>
+            <div class="kpi-value" id="kpi-total-clientes">0</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-title">Clientes Ativos</div>
+            <div class="kpi-value green" id="kpi-ativos">0</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-title">Taxa de Churn</div>
+            <div class="kpi-value amber" id="kpi-churn">0%</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-title">Receita Acumulada</div>
+            <div class="kpi-value purple" id="kpi-receita">R$ 0,00</div>
+        </div>
+    </div>
+
+    <div class="charts-grid">
+        <div class="chart-card">
+            <div class="chart-title">📍 Receita Total por Estado (UF)</div>
+            <canvas id="chart-estados"></canvas>
+        </div>
+        <div class="chart-card">
+            <div class="chart-title">🏷️ Segmentação de Clientes (RFM)</div>
+            <canvas id="chart-rfm"></canvas>
+        </div>
+    </div>
+
+    <script>
+        let chartEstadoInstance = null;
+        let chartRfmInstance = null;
+
+        async function loadDashboard() {
+            const resKpis = await fetch('/api/kpis');
+            const kpis = await resKpis.json();
+
+            document.getElementById('kpi-total-clientes').innerText = kpis.total_clientes;
+            document.getElementById('kpi-ativos').innerText = kpis.clientes_ativos;
+            document.getElementById('kpi-churn').innerText = `${kpis.taxa_churn_percentual}%`;
+            document.getElementById('kpi-receita').innerText = `R$ ${kpis.receita_total.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+
+            // Gráfico por Estado
+            const resEstados = await fetch('/api/distribuicao-estados');
+            const estados = await resEstados.json();
+
+            if(chartEstadoInstance) chartEstadoInstance.destroy();
+            chartEstadoInstance = new Chart(document.getElementById('chart-estados'), {
+                type: 'bar',
+                data: {
+                    labels: estados.map(e => e.estado),
+                    datasets: [{
+                        label: 'Receita (R$)',
+                        data: estados.map(e => e.receita_estado),
+                        backgroundColor: '#06b6d4'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+
+            // Segmentação RFM
+            const resRfm = await fetch('/api/segmentacao-rfm');
+            const rfmData = await resRfm.json();
+            
+            const contagem = {};
+            rfmData.forEach(c => {
+                contagem[c.categoria] = (contagem[c.categoria] || 0) + 1;
+            });
+
+            if(chartRfmInstance) chartRfmInstance.destroy();
+            chartRfmInstance = new Chart(document.getElementById('chart-rfm'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(contagem),
+                    datasets: [{
+                        data: Object.values(contagem),
+                        backgroundColor: ['#10b981', '#06b6d4', '#8b5cf6', '#f59e0b']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { labels: { color: '#f1f5f9' } } }
+                }
+            });
+        }
+
+        async function triggerSimulation() {
+            await fetch('/api/simular?quantidade=10', { method: 'POST' });
+            await loadDashboard();
+        }
+
+        loadDashboard();
+    </script>
+</body>
+</html>
