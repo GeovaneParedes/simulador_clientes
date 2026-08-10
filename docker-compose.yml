@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  crm-simulador:
+    build: .
+    container_name: simulador_clientes_app
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_PATH=simulador_clientes.db
+    volumes:
+      - ./simulador_clientes.db:/app/simulador_clientes.db
+    restart: always
